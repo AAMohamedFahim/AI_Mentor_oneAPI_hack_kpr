@@ -14,6 +14,8 @@ from langchain.chains import LLMChain
 from langchain.schema import HumanMessage, AIMessage
 from langchain.memory import ConversationBufferMemory
 import webbrowser
+from flow import flow_generator
+from typing import Dict
 
 load_dotenv()
 app = FastAPI()
@@ -128,6 +130,12 @@ class ChatInput(BaseModel):
     user_id: str
     message: str
     
+# In-memory storage to simulate DB for flowcharts
+
+flowchart_storage: Dict[str, str] = {}
+class FlowchartRequest(BaseModel):
+    topic: str
+    
 #Data extractor-----------------------------------------------------
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -135,7 +143,7 @@ class ChatInput(BaseModel):
     user_id: str
     message: str
 
-groq_api_key = "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"
+groq_api_key = "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"
 
 def get_conversation_memory(user_id: str):
     """Retrieve the conversation memory for a specific user from Redis."""
@@ -197,7 +205,7 @@ def bio_summarizer(history_string):
         file_name = user_id + "_about"
         try:
             with open(file_name, 'w') as file:  
-                file.write(op)
+                file.write(content)
             print(f"Data written to {file_name}")
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -327,7 +335,7 @@ async def chat(chat_input: ChatInput):
 
     prompt_template = """you are a helpfull assistant to ask questions from user
     You will ask the following questions to gather the necessary information:
-        1. name.
+        1. full name.
         2. birthday.(this is oct 2024 if user provides year and there age below 10 years then make sure there name)
             Note :  if they wont provide year then dont calculate age
         3. highest level of education completed so far
@@ -339,9 +347,8 @@ async def chat(chat_input: ChatInput):
         
         note:
             1.your tone should be polite and friendly and more humanastic
-            2.respose like a convertation. it should be short and easy to read.
+            2.respose like a convertation.
             3.your reply should be short.
-            4. your reply should be under 15 words.
             5. dont assist anything else then asking question.
             
         
@@ -349,13 +356,12 @@ async def chat(chat_input: ChatInput):
         
         1. you must ask questions one by one.
         2. dont ask question if already user given.
-        3. if user cant understand question then try to explain in short and simple.
-        4. once you get all neccasary details Please respond with the exact phrase: 'Thank you for providing your details!' or 'Thank you for providing your details!' (with an exclamation mark).
-        5. if user cant reply related to question try to explain that question where user can get easily.
-        6. dont always tell about previous question.
-        7. check does user answer is realistic or not then only you should move to nest question.
-        8. you should never ask same question again for any reason.
-        9. dont be ask follow up questions
+        3. once you get all neccasary details say exactely "Thank you for providing your details!".
+        4. if user cant reply related to question try to explain that question.
+        5. dont always tell about previous question.
+        6. check does user answer is realistic or not then only you should move to nest question.
+        7. you should never ask same question again for any reason.
+        8. dont be ask follow up questions
 
         
         Here is the conversation history:
@@ -377,24 +383,97 @@ async def chat(chat_input: ChatInput):
     # print(response)
     history_string = extract_user_convo(user_id)
     print(history_string)
-    if "Thank you for providing your detail" in processed_response:
+    if "Thank you for providing your details!" in processed_response:
         print("\n\n\n---------------------------------------------------",type(history_string))
         response1 = bio_summarizer(history_string)
     return {"response": processed_response}
 
 
 
-@app.post("/profile")
-async def chat():
-    global user_name
-    print(user_name)
-    return {
-    "name": user_name,
-    "role": "Web Developer | AI Enthusiast",
-    "progress": 85,
-    "courses": 12,
-    "rating": 4.8
-    }
+
+# Generate Flowchart route
+@app.post("/api/generateFlowchart")
+async def generate_flowchart(req: FlowchartRequest):
+    topic = req.topic
+    print("topic: ", topic)
+    
+    # Check if the topic already exists in storage
+    if topic in flowchart_storage:
+        return {
+            "status": "success",
+            "mermaid_code": flowchart_storage[topic],
+            "message": "Fetched existing flowchart"
+        }
+
+    # Generate new flowchart
+    try:
+        new_mermaid_code = flow_generator(topic)
+    #     new_mermaid_code = '''graph TD
+    # A[Python Programming]:::hoverable --> B[Basic Syntax and Data Types]
+    # A --> C[Control Structures and Functions]
+    # B --> D[Variables and Data Types]
+    # B --> E[Operators and Expressions]
+    # C --> F[Conditional Statements]
+    # C --> G[Loops and Iterations]
+    # F --> H[If-Else Statements]
+    # G --> I[For Loops]
+    # D --> J[Lists and Tuples]
+    # E --> K[Arithmetic and Comparison Operators]
+    # J --> L[List Methods]
+    # I --> M[While Loops]
+    # H --> N[Switch Statements]
+    # B --> O[Error Handling]
+    # O --> P[Try-Except Blocks]
+    # K --> Q[Logical Operators]
+    # L --> R[Sorting and Searching]
+    # G --> S[Break and Continue Statements]
+    # E --> T[Mathematical Operations]
+    # T --> U[Trigonometric Functions]
+    # F --> V[Decision Making]
+    # R --> W[Array and Dictionary Operations]
+    # S --> X[Exception Handling]
+    # C --> Y[Module and Package Importing]
+    # Y --> Z[Importing Modules]
+    # Z --> AA[Importing Specific Functions]
+    # AA --> BB[Exporting Functions]
+    # BB --> CC[Class and Object-Oriented Programming]
+    # CC --> DD[Encapsulation and Abstraction]
+    # DD --> EE[Inheritance and Polymorphism]
+    # EE --> FF[Operator Overloading]'''
+        
+        # Store the generated code
+        flowchart_storage[topic] = new_mermaid_code
+        status = f'<p>Average time to complete {topic}: 2 hours</p><p>Status: <input type="radio" name="status" value="Not Touched"> Not Touched<input type="radio" name="status" value="In Progress"> In Progress <input type="radio" name="status" value="Completed"> Completed </p>'
+        return {
+            "status": "success",
+            "topic": topic,
+            "progeress": status,
+            "mermaid_code": new_mermaid_code,
+            "message": "Generated new flowchart"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating flowchart: {str(e)}")
+
+# Delete a flowchart by topic
+@app.delete("/api/deleteFlowchart")
+async def delete_flowchart(topic: str):
+    if topic not in flowchart_storage:
+        raise HTTPException(status_code=404, detail="Topic not found")
+    
+    # Remove the topic from storage
+    del flowchart_storage[topic]
+    return {"status": "success", "message": f"Deleted flowchart for {topic}"}
+
+# Delete all flowcharts
+@app.delete("/api/deleteAllFlowcharts")
+async def delete_all_flowcharts():
+    flowchart_storage.clear()  # Clears the entire storage
+    return {"status": "success", "message": "Deleted all flowcharts"}
+
+# Get all stored topics
+@app.get("/api/getAllTopics")
+async def get_all_topics():
+    return {"topics": list(flowchart_storage.keys())}
 
 
 if __name__ == "__main__":
