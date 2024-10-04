@@ -135,7 +135,7 @@ class ChatInput(BaseModel):
     user_id: str
     message: str
 
-groq_api_key = "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"
+groq_api_key = "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"
 
 def get_conversation_memory(user_id: str):
     """Retrieve the conversation memory for a specific user from Redis."""
@@ -197,7 +197,7 @@ def bio_summarizer(history_string):
         file_name = user_id + "_about"
         try:
             with open(file_name, 'w') as file:  
-                file.write(content)
+                file.write(op)
             print(f"Data written to {file_name}")
         except Exception as e:
             print(f"An error occurred: {e}")
@@ -327,7 +327,7 @@ async def chat(chat_input: ChatInput):
 
     prompt_template = """you are a helpfull assistant to ask questions from user
     You will ask the following questions to gather the necessary information:
-        1. full name.
+        1. name.
         2. birthday.(this is oct 2024 if user provides year and there age below 10 years then make sure there name)
             Note :  if they wont provide year then dont calculate age
         3. highest level of education completed so far
@@ -339,8 +339,9 @@ async def chat(chat_input: ChatInput):
         
         note:
             1.your tone should be polite and friendly and more humanastic
-            2.respose like a convertation.
+            2.respose like a convertation. it should be short and easy to read.
             3.your reply should be short.
+            4. your reply should be under 15 words.
             5. dont assist anything else then asking question.
             
         
@@ -348,12 +349,13 @@ async def chat(chat_input: ChatInput):
         
         1. you must ask questions one by one.
         2. dont ask question if already user given.
-        3. once you get all neccasary details say exactely "Thank you for providing your details!".
-        4. if user cant reply related to question try to explain that question.
-        5. dont always tell about previous question.
-        6. check does user answer is realistic or not then only you should move to nest question.
-        7. you should never ask same question again for any reason.
-        8. dont be ask follow up questions
+        3. if user cant understand question then try to explain in short and simple.
+        4. once you get all neccasary details Please respond with the exact phrase: 'Thank you for providing your details!' or 'Thank you for providing your details!' (with an exclamation mark).
+        5. if user cant reply related to question try to explain that question where user can get easily.
+        6. dont always tell about previous question.
+        7. check does user answer is realistic or not then only you should move to nest question.
+        8. you should never ask same question again for any reason.
+        9. dont be ask follow up questions
 
         
         Here is the conversation history:
@@ -375,10 +377,24 @@ async def chat(chat_input: ChatInput):
     # print(response)
     history_string = extract_user_convo(user_id)
     print(history_string)
-    if "Thank you for providing your details!" in processed_response:
+    if "Thank you for providing your detail" in processed_response:
         print("\n\n\n---------------------------------------------------",type(history_string))
         response1 = bio_summarizer(history_string)
     return {"response": processed_response}
+
+
+
+@app.post("/profile")
+async def chat():
+    global user_name
+    print(user_name)
+    return {
+    "name": user_name,
+    "role": "Web Developer | AI Enthusiast",
+    "progress": 85,
+    "courses": 12,
+    "rating": 4.8
+    }
 
 
 if __name__ == "__main__":

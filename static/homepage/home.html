@@ -23,29 +23,29 @@
     </nav>
 
     <!-- Profile Popup -->
-    <div id="profilePopup" class="profile-popup">
-        <div class="profile-content">
-            <span class="close">&times;</span>
-            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-picture">
-            <h2>John Doe</h2>
-            <p class="user-info">Web Developer | AI Enthusiast</p>
-            <div class="user-stats">
-                <div class="stat">
-                    <span class="stat-value">85%</span>
-                    <span class="stat-label">Progress</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">12</span>
-                    <span class="stat-label">Courses</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">4.8</span>
-                    <span class="stat-label">Rating</span>
-                </div>
+<div id="profilePopup" class="profile-popup">
+    <div class="profile-content">
+        <span class="close">&times;</span>
+        <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-picture">
+        <h2 id="user-name">Loading...</h2> <!-- Placeholder for user name -->
+        <p id="user-info" class="user-info">Loading...</p> <!-- Placeholder for user role -->
+        <div class="user-stats">
+            <div class="stat">
+                <span id="progress-value" class="stat-value">--</span>
+                <span class="stat-label">Progress</span>
             </div>
-            <a href="#" class="edit-profile-btn">Edit Profile</a>
+            <div class="stat">
+                <span id="courses-value" class="stat-value">--</span>
+                <span class="stat-label">Courses</span>
+            </div>
+            <div class="stat">
+                <span id="rating-value" class="stat-value">--</span>
+                <span class="stat-label">Rating</span>
+            </div>
         </div>
+        <a href="#" class="edit-profile-btn">Edit Profile</a>
     </div>
+</div>
 
     <!-- Main Banner Section -->
     <section class="banner">
