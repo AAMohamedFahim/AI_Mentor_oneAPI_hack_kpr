@@ -261,9 +261,9 @@ input[type="radio"] {
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 40%;
-    height: 60%;
-    background-color: white;
+    width: 50%;
+    height: 70%;
+    background-color: rgb(243, 237, 188);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 16px 16px 0 0;
     z-index: 1000;
@@ -272,7 +272,7 @@ input[type="radio"] {
 }
 
 .chatbot-header {
-    background-color: #4A90E2;
+    background: linear-gradient(135deg, #33aedb, #8e32a5);
     color: white;
     padding: 1rem;
     display: flex;
@@ -330,11 +330,11 @@ input[type="radio"] {
 }
 
 .user-message {
-    background-color: #d1e7dd;
+    background-color: #79d5ac;
     text-align: right;
 }
 
 .bot-message {
-    background-color: #f8d7da;
+    background-color: #8877e6;
     text-align: left;
 }

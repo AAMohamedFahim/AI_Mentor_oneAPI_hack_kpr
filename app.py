@@ -425,11 +425,11 @@ async def generate_flowchart(req: FlowchartRequest):
     # Generate new flowchart
     try:
         new_mermaid_code = flow_generator(topic)
-        file_name_flow = user_id + "_flows"
-        # Open the file in append mode ('a') which creates the file if it doesn't exist
-        with open(file_name_flow, 'a') as file:
-            file.write(new_mermaid_code)  # Append the code content with a newline for clarity
-        print(f"Code has been appended to {file_name}")
+        # file_name_flow = user_id + "_flows"
+        # # Open the file in append mode ('a') which creates the file if it doesn't exist
+        # with open(file_name_flow, 'a') as file:
+        #     file.write(new_mermaid_code)  # Append the code content with a newline for clarity
+        # print(f"Code has been appended to {file_name}")
         
     
     #     new_mermaid_code = '''graph TD
@@ -468,6 +468,7 @@ async def generate_flowchart(req: FlowchartRequest):
         # Store the generated code
         flowchart_storage[topic] = new_mermaid_code
         status = f'<p>Average time to complete {topic}: 2 hours</p><p>Status: <input type="radio" name="status" value="Not Touched"> Not Touched<input type="radio" name="status" value="In Progress"> In Progress <input type="radio" name="status" value="Completed"> Completed </p>'
+        print("\n\n\n\n\n1221")
         return {
             "status": "success",
             "topic": topic,

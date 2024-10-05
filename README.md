@@ -25,12 +25,17 @@ The **AI Mentor Platform** is designed to provide personalized mentorship and le
 
 #### AI Mentor
 
-![mentor](https://github.com/user-attachments/assets/e1b15662-93f3-4a7c-a09a-f6d8c1fa4ece)
+![Chatter](https://github.com/user-attachments/assets/5baea936-f854-4a20-9077-9f0df8600940)
 
 #### Flow Generator
 
-![flow](https://github.com/user-attachments/assets/a52f5177-f5ec-4673-8066-eb7a7c09c8da)
+![flow_12](https://github.com/user-attachments/assets/30926b06-a5be-4db0-b5c5-f75d2c32662e)
 
+#### Dashboard
+
+![dashboard1](https://github.com/user-attachments/assets/c05b7f40-cb39-4f25-a14d-a0662977703a)
+
+![dashboard0](https://github.com/user-attachments/assets/8aad29e0-301e-48de-bafe-540521113fde)
 
 
 ## Tech Stack
