@@ -51,8 +51,7 @@ llm=ChatGroq(groq_api_key=groq_api_key,
 def flow_generator(topic):
         llm_chain = LLMChain(
                 llm=llm,
-                prompt=prompt,
-                verbose=True)
+                prompt=prompt)
 
         response =llm_chain.invoke({"input":topic})
         return response['text']

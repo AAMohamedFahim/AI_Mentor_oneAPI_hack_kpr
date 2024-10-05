@@ -185,7 +185,8 @@ document.addEventListener('DOMContentLoaded', function () {
     sendChatbotMessage.addEventListener('click', () => {
         const message = chatbotInput.value;
         if (message) {
-            sendMessageToBackend(message);
+            appendUserMessage(message);  // Display user's message in the chat
+            sendMessageToBackend(message); // Send to backend
             chatbotInput.value = ''; // Clear input field
         }
     });
@@ -199,15 +200,22 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                updateConversation(data.response); // Display response in chatbot
+                appendBotMessage(data.response); // Display bot's response
             }
         })
         .catch(error => console.error('Error:', error));
     }
 
-    function updateConversation(response) {
+    function appendUserMessage(message) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = 'chatbot-message';
+        messageDiv.className = 'chatbot-message user-message';  // Optional class for styling user message
+        messageDiv.textContent = "You: " + message;
+        chatbotConversation.appendChild(messageDiv);
+    }
+
+    function appendBotMessage(response) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chatbot-message bot-message';  // Optional class for styling bot message
         messageDiv.textContent = response;
         chatbotConversation.appendChild(messageDiv);
     }
@@ -219,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.status === 'success') {
                 chatbotConversation.innerHTML = ''; // Clear current conversation
                 data.history.forEach(message => {
-                    updateConversation(message); // Load previous messages
+                    appendBotMessage(message); // Load previous messages
                 });
             }
         })
