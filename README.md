@@ -1,4 +1,7 @@
-# AI Mentor Platform
+
+# TeamID-A0136(Neural Nexus)
+
+## AI Mentor Platform
 
 ## About This Platform
 
@@ -9,11 +12,22 @@ The **AI Mentor Platform** is designed to provide personalized mentorship and le
 - **Real-Time Support:** An integrated AI chatbot offers on-demand mentorship, answering questions and guiding users through challenges as they arise.
 - **Real-world data based Roadmap** It creates roadmap based on current news.
 
+
+## Tech Stack
+
+- **oneAPI Tools:** Analytics Toolkit , OneDNN , Ipython , OpenVINO LLMs(trying to implement).
+- **Frontend:** HTML, CSS, JavaScript
+- **Models:** Llama-3.1-70b , Roberta-base-model(sentiment analysis)
+- **GenAI Methods** - RAG , Prompt Engineering
+- **API:** FastAPI
+- **Database:** MySQL, Redis
+
+
 ### Overall Architecture
 
 ![AI Mentor Architecture](https://github.com/user-attachments/assets/d8a19cd8-0c86-425e-9402-61394d40c10c)
 
-### Pages ScreenShorts
+### Pages Screenshots
 
 #### Data Extrcator
 
@@ -37,12 +51,3 @@ The **AI Mentor Platform** is designed to provide personalized mentorship and le
 
 ![dashboard0](https://github.com/user-attachments/assets/8aad29e0-301e-48de-bafe-540521113fde)
 
-
-## Tech Stack
-
-- **Frontend:** HTML, CSS, JavaScript
-- **Models:** Llama-3.1-70b
-- **GenAI Methods** - RAG , Prompt Engineering
-- **oneAPI Tools:** Analytics Toolkit, OpenVINO LLM (in development)
-- **API:** FastAPI
-- **Database:** MySQL, Redis
